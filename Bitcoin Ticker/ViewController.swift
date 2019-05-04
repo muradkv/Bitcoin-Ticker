@@ -60,7 +60,7 @@ class ViewController: UIViewController {
     
     func updateBitcoinData(json: JSON) {
         
-        if let bitcoipPriceResult = json["BTC"]["price"].double {
+        if let bitcoipPriceResult = json["averages"]["day"].double {
             
         } else {
             bitcoinPriceLabel.text = "Bitcoin price Unavailable"
