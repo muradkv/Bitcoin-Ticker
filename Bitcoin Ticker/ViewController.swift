@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Alamofire
+import SwiftyJSON
 
 class ViewController: UIViewController {
     
@@ -30,6 +32,42 @@ class ViewController: UIViewController {
         finalURL = baseURL + currencyArray[row]
         print(finalURL)
     }
+    
+    //MARK: - Networking
+    /***************************************************************/
+    
+    func getBitcoinData(url: String) {
+        
+        Alamofire.request(url, method: .get)
+            .responseJSON { response in
+                if response.result.isSuccess {
+                    
+                    print("Sucess! Got the Bitcoin data")
+                    let bitcoinJSON: JSON = JSON(response.result.value!)
+                    
+                    self.updateBitcoinData(json: bitcoinJSON)
+                    
+                } else {
+                    print("Error: \(String(describing: response.result.error))")
+                    self.bitcoinPriceLabel.text = "Connection Issues"
+                }
+        }
+        
+    }
+    
+    //MARK: - JSON Parsing
+    /***************************************************************/
+    
+    func updateBitcoinData(json: JSON) {
+        
+        if let bitcoipPriceResult = json["BTC"]["price"].double {
+            
+        } else {
+            bitcoinPriceLabel.text = "Bitcoin price Unavailable"
+        }
+        
+    }
+
     
 }
 
