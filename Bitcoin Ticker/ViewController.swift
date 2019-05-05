@@ -22,7 +22,9 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
         pickerView(currencyPicker, didSelectRow: 0, inComponent: 1)
+        getBitcoinData(url: finalURL)
     }
 
 
@@ -60,8 +62,9 @@ class ViewController: UIViewController {
     
     func updateBitcoinData(json: JSON) {
         
-        if let bitcoipPriceResult = json["averages"]["day"].double {
-            
+        if let bitcoinpPriceResult = json["ask"].double {
+            bitcoinPriceLabel.text = String(bitcoinpPriceResult)
+            print(bitcoinpPriceResult)
         } else {
             bitcoinPriceLabel.text = "Bitcoin price Unavailable"
         }
