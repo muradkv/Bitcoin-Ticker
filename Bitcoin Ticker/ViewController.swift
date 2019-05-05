@@ -25,9 +25,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         
         currencyPicker.dataSource = self
         currencyPicker.delegate = self
-        
-        pickerView(currencyPicker, didSelectRow: 0, inComponent: 1)
-        getBitcoinData(url: finalURL)
+    
     }
     
     //MARK: - Networking
@@ -85,6 +83,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         print(currencyArray[row])
         
         finalURL = baseURL + currencyArray[row]
+        getBitcoinData(url: finalURL)
     }
 }
 
