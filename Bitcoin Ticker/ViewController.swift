@@ -14,6 +14,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     
     let baseURL = "https://apiv2.bitcoinaverage.com/indices/global/ticker/BTC"
     let currencyArray = ["AUD", "BRL","CAD","CNY","EUR","GBP","HKD","IDR","ILS","INR","JPY","MXN","NOK","NZD","PLN","RON","RUB","SEK","SGD","USD","ZAR"]
+    let currencySymbols = ["$", "R$", "$", "¥", "€", "£", "$", "Rp", "₪", "₹", "¥", "$", "kr", "$", "zł", "lei", "₽", "kr", "$", "$", "R"]
     var finalURL = ""
     
     @IBOutlet weak var bitcoinPriceLabel: UILabel!
@@ -31,7 +32,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     //MARK: - Networking
     /***************************************************************/
     
-    func getBitcoinData(url: String) {
+    func getBitcoinData(url: String, symbol: String) {
         
         Alamofire.request(url, method: .get)
             .responseJSON { response in
@@ -40,7 +41,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
                     print("Sucess! Got the Bitcoin data")
                     let bitcoinJSON: JSON = JSON(response.result.value!)
                     
-                    self.updateBitcoinData(json: bitcoinJSON)
+                    self.updateBitcoinData(json: bitcoinJSON, symbol: symbol)
                     
                 } else {
                     print("Error: \(String(describing: response.result.error))")
@@ -53,10 +54,10 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     //MARK: - JSON Parsing
     /***************************************************************/
     
-    func updateBitcoinData(json: JSON) {
+    func updateBitcoinData(json: JSON, symbol: String) {
         
         if let bitcoinpPriceResult = json["ask"].double {
-            bitcoinPriceLabel.text = String(bitcoinpPriceResult)
+            bitcoinPriceLabel.text = symbol + String(bitcoinpPriceResult)
             print(bitcoinpPriceResult)
         } else {
             bitcoinPriceLabel.text = "Bitcoin price Unavailable"
@@ -83,7 +84,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         print(currencyArray[row])
         
         finalURL = baseURL + currencyArray[row]
-        getBitcoinData(url: finalURL)
+        getBitcoinData(url: finalURL, symbol: currencySymbols[row])
     }
 }
 
